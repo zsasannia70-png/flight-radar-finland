@@ -8,10 +8,12 @@ A premium, real-time flight radar application specifically designed for the Finl
 ![Finland Only](https://img.shields.io/badge/Region-Finland%20Only-blue?style=for-the-badge)
 
 ## 🌟 Features
+![alt text](image.png)
 
 - **Real-time Tracking**: Live updates of airplane positions every 10 seconds.
 - **Finland Specific**: Automatic filtering to show only flights within Finnish coordinates.
-- **Premium Glassmorphism Design**: sleek dark-themed UI with backdrop-blur and responsive panels.
+- **Premium Glassmorphism Design**: sleek dark-themed UI with backdrop-blur and responsive 
+panels.
 - **Detailed Flight Info**: Select any airplane to view:
     - Callsign & ICAO24
     - Real-time Speed (km/h)
