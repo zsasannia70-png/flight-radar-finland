@@ -8,7 +8,9 @@ A premium, real-time flight radar application specifically designed for the Finl
 ![Finland Only](https://img.shields.io/badge/Region-Finland%20Only-blue?style=for-the-badge)
 
 ## 🌟 Features
-![alt text](image.png)
+<img width="1646" height="833" alt="image" src="https://github.com/user-attachments/assets/00442b91-7d15-4f46-ae5c-346d55289faf" />
+
+
 
 - **Real-time Tracking**: Live updates of airplane positions every 10 seconds.
 - **Finland Specific**: Automatic filtering to show only flights within Finnish coordinates.
