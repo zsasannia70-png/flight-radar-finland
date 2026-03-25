@@ -39,7 +39,6 @@ function initMap() {
         maxZoom: 20
     }).addTo(map);
 
-    // Add small watermark/attribution manually if needed, but keeping it clean
     L.control.attribution({ position: 'bottomright' }).addTo(map);
 }
 
@@ -74,23 +73,21 @@ function renderFlights(states) {
         const icao24 = state[0];
         const lat = state[6];
         const lon = state[5];
-        const trueTrack = state[10] || 0; // degrees
+        const trueTrack = state[10] || 0; 
         
         if (lat === null || lon === null) return;
         
-        // Final check for Finland bounds to be strict
+        // Finland bounds
         if (lat < LAMIN || lat > LAMAX || lon < LOMIN || lon > LOMAX) return;
 
         currentIcao24s.add(icao24);
         const isSelected = (icao24 === selectedIcao24);
         
         if (airplaneMarkers[icao24]) {
-            // Update existing marker
             airplaneMarkers[icao24].setLatLng([lat, lon]);
             airplaneMarkers[icao24].setIcon(createPlaneIcon(trueTrack, isSelected));
             airplaneMarkers[icao24].flightData = state;
         } else {
-            // Create new marker
             const marker = L.marker([lat, lon], {
                 icon: createPlaneIcon(trueTrack, isSelected)
             }).addTo(map);
@@ -138,7 +135,6 @@ async function selectFlight(icao24) {
         
         const callsign = (state[1] || '').trim();
         
-        // Loading state
         elOrigin.textContent = '...';
         elOrigin.classList.add('loading');
         elDestination.textContent = '...';
@@ -163,9 +159,9 @@ function updateInfoPanelData(state) {
     const callsign = (state[1] || '').trim();
     const baroAltitude = state[7]; 
     const onGround = state[8];
-    const velocity = state[9]; // m/s
+    const velocity = state[9]; 
     const trueTrack = state[10];
-    const timePosition = state[3]; // Unix timestamp
+    const timePosition = state[3]; 
     
     let alt = baroAltitude !== null ? Math.round(baroAltitude) : 0;
     let speedKmh = velocity !== null ? Math.round(velocity * 3.6) : 0;
@@ -190,16 +186,19 @@ function updateInfoPanelData(state) {
 
 async function fetchRouteDetails(callsign) {
     try {
-        const response = await fetch(`https://opensky-network.org/api/routes?callsign=${callsign}`);
-        if (!response.ok) throw new Error("API Limit/Error");
-        const data = await response.json();
+        const url = `https://opensky-network.org/api/routes?callsign=${callsign}`;
+        let response = await fetch(url);
         
-        if (data && data.route && data.route.length >= 2) {
-            elOrigin.textContent = data.route[0];
-            elDestination.textContent = data.route[data.route.length - 1];
+        if (!response.ok) {
+            // Fallback to proxy
+            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+            response = await fetch(proxyUrl);
+            const proxyData = await response.json();
+            const data = JSON.parse(proxyData.contents);
+            updateRouteDisplay(data);
         } else {
-            elOrigin.textContent = 'Unknown';
-            elDestination.textContent = 'Unknown';
+            const data = await response.json();
+            updateRouteDisplay(data);
         }
     } catch (e) {
         elOrigin.textContent = 'Unavailable';
@@ -210,13 +209,22 @@ async function fetchRouteDetails(callsign) {
     }
 }
 
+function updateRouteDisplay(data) {
+    if (data && data.route && data.route.length >= 2) {
+        elOrigin.textContent = data.route[0];
+        elDestination.textContent = data.route[data.route.length - 1];
+    } else {
+        elOrigin.textContent = 'Unknown';
+        elDestination.textContent = 'Unknown';
+    }
+}
+
 async function fetchFlightData() {
     try {
         const url = `https://opensky-network.org/api/states/all?lamin=${LAMIN}&lomin=${LOMIN}&lamax=${LAMAX}&lomax=${LOMAX}`;
         let response = await fetch(url);
         
         if (!response.ok) {
-            // Fallback to proxy
             const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
             response = await fetch(proxyUrl);
             const proxyData = await response.json();
