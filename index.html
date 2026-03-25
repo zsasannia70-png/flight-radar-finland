@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finland Flight Radar</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Map Container -->
+        <main id="map"></main>
+        
+        <!-- Info Panel (Right Side) -->
+        <aside id="info-panel" class="hidden" aria-hidden="true">
+            <button id="close-btn" aria-label="Close panel">&times;</button>
+            <div class="panel-header">
+                <h1 id="flight-callsign">FLGT123</h1>
+                <div id="flight-status-container">
+                    <span id="flight-status" class="status-badge">Airborne</span>
+                </div>
+            </div>
+            
+            <div class="panel-body">
+                <div class="info-group">
+                    <span class="info-label">Route</span>
+                    <div class="info-value">
+                        <span id="flight-origin" class="loading">Origin</span>
+                        <span style="color: var(--text-muted); margin: 0 8px;">→</span>
+                        <span id="flight-destination" class="loading">Destination</span>
+                    </div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-group">
+                        <span class="info-label">Speed</span>
+                        <span id="flight-speed" class="info-value highlighted">0 km/h</span>
+                    </div>
+                    <div class="info-group">
+                        <span class="info-label">Altitude</span>
+                        <span id="flight-height" class="info-value highlighted">0 m</span>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-group">
+                        <span class="info-label">Heading</span>
+                        <span id="flight-track" class="info-value">0°</span>
+                    </div>
+                    <div class="info-group">
+                        <span class="info-label">ICAO24</span>
+                        <span id="flight-icao24" class="info-value">123456</span>
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <span class="info-label">Last Contact</span>
+                    <span id="last-contact" class="info-value">N/A</span>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="main.js"></script>
+</body>
+</html>
